@@ -1,11 +1,3 @@
-@font-face {
-    font-family: 'chunkfiveroman';
-    src: url('chunkfive-webfont.woff2') format('woff2'),
-         url('chunkfive-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
 
 * {
     margin: 0;
@@ -51,22 +43,6 @@ body {
     clear: both;
 }
 
-.sidebar {
-    background: orange;
-    width: 520px;
-    height: 600px;
-    float: left;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-    background: darkgoldenrod;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
 .h1 {
     width: 50px;
     height: 50px;
@@ -87,38 +63,4 @@ body {
 
 .nav ul li:hover {
     background: white;
-}
-
-.box1 {
-    width: 100px;
-    height: 100px;
-    background: navajowhite;
-}
-
-.box2 {
-    width: 200px;
-    height: 200px;
-    background: blue;
-}
-
-.box3 {
-    width: 300px;
-    height: 300px;
-    background: green;
-}
-
-.pug-pic {
-    position: absolute;
-    top: 180px;
-    left: 900px;
-    width: 620px;
-    height: 832px;
-}
-
-.pug2-pic {
-    position: absolute;
-    top: 1020px;
-    left: 900px;
-    width: 620px;
-    height: 832px;
 }
