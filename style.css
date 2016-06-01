@@ -74,3 +74,10 @@ body {
 .nav ul li:hover {
     background: white;
 }
+
+.gc {
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    
+}
