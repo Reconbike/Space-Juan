@@ -66,6 +66,6 @@ Player.prototype.update = function(deltaTime)
 
 Player.prototype.draw = function()
 {
-	context.drawImage(
-	player.image, -player.width/2, -player.height/2);
+	//context.drawImage(
+	//player.image, -player.width/2, -player.height/2);
 }
