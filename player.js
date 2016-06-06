@@ -1,14 +1,72 @@
 var Player = function() 
 {
+	this.image = new image("Player.png");
 
+	this.position = new Vector2( 0, 0)
+
+    this.width= 63;
+    this.height= 57;
+
+    this.directionX = 0;
+    this.directionY = 0;
+
+    this.angularDirection = 0;
+    this.rotation= 0;
+
+    this.shootTimer = 0;
 }
 
 Player.prototype.update = function(deltaTime)
 {
-
+    if(keyboard.isKeyDown(keyboard.KEY_W) == true)
+    {
+    	player.directionY = 10;
+    }
+    else
+    {
+    	player.directionY = 0;
+    }
+      	
+    if(keyboard.isKeyDown(keyboard.KEY_S) == true)
+    {
+        player.directionY = -1.5;
+    }
+    else
+    {
+    	player.directionY = 0;
+    }
+    if(keyboard.isKeyDown(keyboard.KEY_A) == true)
+    {
+        player.angularDirection = -2;
+    }
+    else
+    {
+      	player.angularDirection = 0;
+    }
+    if(kkeyboard.isKeyDown(keyboard.KEY_D) == true)
+    {
+        player.angularDirection = 2;
+    }
+    else
+    {
+      	player.angularDirection = 0;
+    }
+    if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && shootTimer <=0)
+    {
+        shootTimer += 0.3;
+        playerShoot();
+    }
+    if(keyboard.isKeyDown(keyboard.KEY_R) == true)
+    {
+      	window.location.reload(false);
+    }
+    if(this.shootTimer > 0)
+    {
+      	this.shooTimer -= deltaTime;
+    }
 }
 
-Player.prototype.draw = functinon ()
+Player.prototype.draw = function()
 {
-
+	this.image.draw(context, this.position.x, this.position.y);
 }
