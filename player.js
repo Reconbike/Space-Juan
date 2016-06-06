@@ -45,7 +45,7 @@ Player.prototype.update = function(deltaTime)
 	    {
 	      	player.angularDirection = 0;
 	    }
-    if(kkeyboard.isKeyDown(keyboard.KEY_D) == true)
+    if(keyboard.isKeyDown(keyboard.KEY_D) == true)
     {
         player.angularDirection = 2;
     }
@@ -58,10 +58,6 @@ Player.prototype.update = function(deltaTime)
         shootTimer += 0.3;
         playerShoot();
     }
-    if(keyboard.isKeyDown(keyboard.KEY_R) == true)
-    {
-      	window.location.reload(false);
-    }
     if(this.shootTimer > 0)
     {
       	this.shooTimer -= deltaTime;
@@ -71,5 +67,5 @@ Player.prototype.update = function(deltaTime)
 Player.prototype.draw = function()
 {
 	context.drawImage(
-    player.image, -player.width/2, -player.height/2);
+	player.image, -player.width/2, -player.height/2);
 }
