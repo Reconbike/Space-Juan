@@ -3,7 +3,8 @@ var Player = function()
 	this.image = document.createElement("img");
 	this.image.src = "Player.png"
 
-	this.position = new Vector2( 0, 0)
+	this.x = 100;
+	this.y = 100;
 
     this.width= 63;
     this.height= 57;
@@ -69,5 +70,6 @@ Player.prototype.update = function(deltaTime)
 
 Player.prototype.draw = function()
 {
-	this.image.draw(context, this.position.x, this.position.y);
+	context.drawImage(
+    player.image, -player.width/2, -player.height/2);
 }
