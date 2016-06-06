@@ -76,8 +76,6 @@ body {
 }
 
 .gc {
-    position: absolute;
-    top: 180px;
-    left: 122px;
+    padding: 10px;
     
 }
