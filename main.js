@@ -29,7 +29,8 @@ var endFrameMillis = Date.now();
 var spawnTimer = 0;
 var speed = 0;
 
-
+var player = new Player();
+var keyboard = new Keyboard();
 
 window.addEventListener('keydown', function(evt) { onKeyDown(evt); }, false);
 window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
@@ -46,6 +47,8 @@ window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
     }
     return deltaTime;
 }  
+
+
 
 
 function rand(floor, ceil)
@@ -114,26 +117,28 @@ function run() {
 
     var deltaTime = getDeltaTime();
 
-    //var s = Math.sin(player.rotation);
-    //var c = Math.cos(player.rotation);
+    var s = Math.sin(player.rotation);
+    var c = Math.cos(player.rotation);
 
-    //var XDir = (player.directionX * c) - (player.directionY * s);
-    //var YDir = (player.directionX * s) + (player.directionY * c);
-    //var XVel = XDir * PLAYER_SPEED;
-    //var YVel = YDir * PLAYER_SPEED;
+    var XDir = (player.directionX * c) - (player.directionY * s);
+    var YDir = (player.directionX * s) + (player.directionY * c);
+    var XVel = XDir * PLAYER_SPEED;
+    var YVel = YDir * PLAYER_SPEED;
+    
+    player.draw();
+    player.update(deltaTime);
 
+    player.x += XVel;
+    player.y += YVel;
 
-    //player.x += XVel;
-    //player.y += YVel;
+    player.rotation += player.angularDirection * PLAYER_TURN_SPEED;
 
-    //player.rotation += player.angularDirection * PLAYER_TURN_SPEED;
-
-    //context.save();
-    //context.translate(player.x, player.y);
-    //context.rotate(player.rotation);
-    //context.drawImage(
-    //    player.image, -player.width / 2, -player.height / 2);
-    //context.restore();
+    context.save();
+    context.translate(player.x, player.y);
+    context.rotate(player.rotation);
+    context.drawImage(
+        player.image, -player.width / 2, -player.height / 2);
+    context.restore();
 
 }
 
