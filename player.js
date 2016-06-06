@@ -1,6 +1,7 @@
 var Player = function() 
 {
-	this.image = new image("Player.png");
+	this.image = document.createElement("img");
+	this.image.src = "Player.png"
 
 	this.position = new Vector2( 0, 0)
 
@@ -22,35 +23,35 @@ Player.prototype.update = function(deltaTime)
     {
     	player.directionY = 10;
     }
-    else
-    {
-    	player.directionY = 0;
-    }
+   		else
+    	{
+    		player.directionY = 0;
+    	}
       	
     if(keyboard.isKeyDown(keyboard.KEY_S) == true)
     {
         player.directionY = -1.5;
     }
-    else
-    {
-    	player.directionY = 0;
-    }
+    	else
+    	{
+    		player.directionY = 0;
+    	}
     if(keyboard.isKeyDown(keyboard.KEY_A) == true)
     {
         player.angularDirection = -2;
     }
-    else
-    {
-      	player.angularDirection = 0;
-    }
+	    else
+	    {
+	      	player.angularDirection = 0;
+	    }
     if(kkeyboard.isKeyDown(keyboard.KEY_D) == true)
     {
         player.angularDirection = 2;
     }
-    else
-    {
-      	player.angularDirection = 0;
-    }
+	    else
+	    {
+	      	player.angularDirection = 0;
+	    }
     if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && shootTimer <=0)
     {
         shootTimer += 0.3;
