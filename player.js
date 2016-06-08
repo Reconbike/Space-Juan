@@ -3,8 +3,8 @@ var Player = function()
 	this.image = document.createElement("img");
 	this.image.src = "Player.png"
 
-	this.x = 100;
-	this.y = 100;
+	this.x = 570;
+	this.y = 340;
 
     this.width= 63;
     this.height= 57;
