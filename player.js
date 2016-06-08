@@ -22,7 +22,7 @@ Player.prototype.update = function(deltaTime)
 {
     if(keyboard.isKeyDown(keyboard.KEY_W) == true)
     {
-    	player.directionY = 10;
+    	player.directionY = 1;
     }
    		else
     	{
@@ -31,7 +31,8 @@ Player.prototype.update = function(deltaTime)
       	
     if(keyboard.isKeyDown(keyboard.KEY_S) == true)
     {
-        player.directionY = -1.5;
+        player.directionY = -1;
+        console.log("S key is pressed");
     }
     	else
     	{
@@ -39,7 +40,8 @@ Player.prototype.update = function(deltaTime)
     	}
     if(keyboard.isKeyDown(keyboard.KEY_A) == true)
     {
-        player.angularDirection = -2;
+        player.angularDirection = -1;
+        console.log("A key is pressed");
     }
 	    else
 	    {
@@ -47,7 +49,7 @@ Player.prototype.update = function(deltaTime)
 	    }
     if(keyboard.isKeyDown(keyboard.KEY_D) == true)
     {
-        player.angularDirection = 2;
+        player.angularDirection = 1;
     }
 	    else
 	    {
