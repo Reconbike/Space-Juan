@@ -20,41 +20,22 @@ var Player = function()
 
 Player.prototype.update = function(deltaTime)
 {
-    if(keyboard.isKeyDown(keyboard.KEY_W) == true)
-    {
+    if(keyboard.isKeyDown(keyboard.KEY_W) == true){
+    	player.directionY = -1;
+    }else if (keyboard.isKeyDown(keyboard.KEY_S) == true) {
     	player.directionY = 1;
+    }else{
+    	player.directionY = 0;
     }
-   		else
-    	{
-    		player.directionY = 0;
-    	}
-      	
-    if(keyboard.isKeyDown(keyboard.KEY_S) == true)
-    {
-        player.directionY = -1;
-        console.log("S key is pressed");
+
+    if(keyboard.isKeyDown(keyboard.KEY_A) == true){
+    	player.angularDirection = -1;
+    }else if (keyboard.isKeyDown(keyboard.KEY_D) == true) {
+    	player.angularDirection = 1;
+    }else{
+    	player.angularDirection = 0;
     }
-    	else
-    	{
-    		player.directionY = 0;
-    	}
-    if(keyboard.isKeyDown(keyboard.KEY_A) == true)
-    {
-        player.angularDirection = -1;
-        console.log("A key is pressed");
-    }
-	    else
-	    {
-	      	player.angularDirection = 0;
-	    }
-    if(keyboard.isKeyDown(keyboard.KEY_D) == true)
-    {
-        player.angularDirection = 1;
-    }
-	    else
-	    {
-	      	player.angularDirection = 0;
-	    }
+
     if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && shootTimer <=0)
     {
         shootTimer += 0.3;
