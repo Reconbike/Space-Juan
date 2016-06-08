@@ -13,7 +13,8 @@ body {
 .container {
     width: 1160px;
     height: 10000px; /* remove later */
-    background: black;
+    background: url(tumblr_nois33dcRU1s4fz4bo1_500.gif);
+  background-size: contain;
     margin-left: auto;
     margin-right: auto;
 }
@@ -68,7 +69,8 @@ h2 {
 }
 
 body {
-  background: darkblue;
+  background: url(giphy.gif);
+  background-size: contain;
 }
 
 .nav ul li:hover {
