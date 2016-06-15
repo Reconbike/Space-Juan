@@ -29,12 +29,18 @@ var endFrameMillis = Date.now();
 var spawnTimer = 0;
 var speed = 0;
 
+
+var asteroids = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
 window.addEventListener('keydown', function(evt) { onKeyDown(evt); }, false);
 window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
- 
+
+function rand(floor, ceil)
+{
+    return Math.floor( (Math.random()* (ceil-floor)) +floor );
+}
  
  function getDeltaTime()
 {
@@ -54,6 +60,44 @@ window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
 function rand(floor, ceil)
 {
     return Math.floor( (Math.random()* (ceil-floor)) +floor );
+}
+
+function spawnAsteroid()
+{
+    var type = rand(0, 300);
+    
+    var asteroid = {};
+    
+    asteroid.image = document.createElement("img");
+    asteroid.image.src = "asteroid.png";
+    asteroid.width = 6;
+    asteroid.hight = 7;
+    
+    var x = SCREEN_WIDTH/2;
+    var y = SCREEN_HEIGHT/2;
+    
+    
+    var dirX = rand(-10,10);
+    var dirY = rand(-10,10);
+    
+    var magnitude = (dirX * dirX) + (dirY * dirY);
+    if(magnitude != 0)
+    {
+        var oneOverMag = 1 / Math.sqrt(magnitude);
+        dirX *= oneOverMag;
+        dirY *= oneOverMag;
+    }
+    
+    var movX = dirX * SCREEN_WIDTH;
+    var movY = dirY * SCREEN_HEIGHT;
+    
+    asteroid.x = x + movX;
+    asteroid.y = y + movY;
+    
+    asteroid.velocityX = -dirX * ASTROID_SPEED;
+    asteroid.velocityY = -dirY * ASTROID_SPEED;
+    
+    asteroids.push(asteroid);
 }
 
 function onKeyDown(event)
@@ -79,11 +123,7 @@ function onKeyDown(event)
       {
           
       }
-      if(event.keyCode == KEY_R)
-      {
-          var gameover = false
-          console.log(cheek)
-      }
+      
       
 }
 function onKeyUp(event)
@@ -112,8 +152,8 @@ function onKeyUp(event)
 }
 
 function run() {
-    context.fillStyle = "#1dad78";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    //context.fillStyle = "#1dad78";
+    //context.fillRect(0, 0, canvas.width, canvas.height);
 
     var deltaTime = getDeltaTime();
 
@@ -124,7 +164,7 @@ function run() {
     var YDir = (player.directionX * s) + (player.directionY * c);
     var XVel = XDir * PLAYER_SPEED;
     var YVel = YDir * PLAYER_SPEED;
-    
+
     player.draw();
     player.update(deltaTime);
 
@@ -133,12 +173,36 @@ function run() {
 
     player.rotation += player.angularDirection * PLAYER_TURN_SPEED;
 
+    if (player.x < 0 || player.x > SCREEN_WIDTH ||
+        player.y < 0 || player.y > SCREEN_HEIGHT)//|| hit == true)
+    {
+        //console.log("hit")
+        gameover = true
+    }
+
+    if (gameover == true) {
+        context.fillStyle = "#000";
+        context.font = "240px Arial";
+        context.fillText("game over!", 400, 240);
+    }
     context.save();
     context.translate(player.x, player.y);
     context.rotate(player.rotation);
     context.drawImage(
         player.image, -player.width / 2, -player.height / 2);
     context.restore();
+
+    for (var i = 0; i < asteroids.length; i++) {
+        context.drawImage(asteroids[i].image, asteroids[i].x, asteroids[i].y);
+    }
+
+    spawnTimer -= deltaTime;
+
+    if (spawnTimer <= 0) {
+        spawnTimer = 1;
+        spawnAsteroid();
+    }
+
 
 }
 
