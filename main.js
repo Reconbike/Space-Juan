@@ -69,7 +69,7 @@ function spawnAsteroid()
     asteroid.image = document.createElement("img");
     asteroid.image.src = "asteroid.png";
     asteroid.width = 100;
-    asteroid.hight = 100;
+    asteroid.height = 100;
     
     var x = SCREEN_WIDTH/2;
     var y = SCREEN_HEIGHT/2;
