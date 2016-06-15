@@ -15,14 +15,6 @@ var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
 var splashTimer = 3;
 var gameState = STATE_SPLASH;
-var gameover = 0
-
-
-var KEY_SPACE = 32;
-var KEY_LEFT =37;
-var KEY_UP = 38;
-var KEY_RIGHT = 39;
-var KEY_DOWN = 40;
 var shootTimer = 0;
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
@@ -111,7 +103,7 @@ function runSplash(deltaTime)
         context.fillStyle = "#ffffff";
         context.font="24px Arial";
         context.fillText("Space-Juan", 450, 350);
-        context.fillText("By Jaymie Gobbet and Brendon Bano", 450, 400);
+        context.fillText("By Jaymie Gobbett and Brendon Bano", 450, 400);
 }
 
 function runGame(deltaTime)
@@ -148,6 +140,13 @@ function runGame(deltaTime)
     for(var i=0; i<asteroids.length; i++)
     {
         context.drawImage(asteroids[i].image, asteroids[i].x, asteroids[i].y);
+    }
+
+    spawnTimer -= deltaTime;
+    if(spawnTimer <= 0)
+    {
+        spawnTimer = 1;
+        spawnAsteroid();
     }
 }
 
