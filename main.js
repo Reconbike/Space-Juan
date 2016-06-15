@@ -34,8 +34,6 @@ var asteroids = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
-window.addEventListener('keydown', function(evt) { onKeyDown(evt); }, false);
-window.addEventListener('keyup', function(evt) { onKeyUp(evt); }, false);
 
 function rand(floor, ceil)
 {
