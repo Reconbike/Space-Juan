@@ -7,8 +7,8 @@ var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
  
 var ASTROID_SPEED = 1;//0.8;
-var PLAYER_SPEED = 1;
-var PLAYER_TURN_SPEED = 0.04
+var PLAYER_SPEED = 2;
+var PLAYER_TURN_SPEED = 0.07
 var BULLET_SPEED = 10.5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
@@ -23,15 +23,10 @@ var speed = 0;
 
 
 var asteroids = [];
+var bullets = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
-
-function rand(floor, ceil)
-{
-    return Math.floor( (Math.random()* (ceil-floor)) +floor );
-}
- 
  function getDeltaTime()
 {
     endFrameMillis = startFrameMillis;
@@ -45,6 +40,31 @@ function rand(floor, ceil)
 }  
 
 
+function PrimaryFire()
+{
+    var bullet = {
+        image: document.createElement("img"),
+        x: player.x,
+        y: player.y,
+        width: 5,
+        height: 5,
+        velocityX: 0,
+        velocityY: 0
+    };
+    bullet.image.src = "bullet.png";
+ 
+    var velX = 0;
+    var velY = -1;
+    var s = Math.sin(player.rotation);
+    var c = Math.cos(player.rotation);
+    var xVel = (velX * c) - (velY * s);
+    var yVel = (velX * s) + (velY * c);
+ 
+    bullet.velocityX = xVel * BULLET_SPEED;
+    bullet.velocityY = yVel * BULLET_SPEED;
+ 
+    bullets.push(bullet);
+}
 
 
 function rand(floor, ceil)
@@ -89,6 +109,18 @@ function spawnAsteroid()
     
     asteroids.push(asteroid);
 }
+
+ function intersects(x1, y1, w1, h1, x2, y2, w2, h2)
+    {
+        if(y2 + h2 < y1 ||
+            x2 + w2 < x1 ||
+            x2> x1 + w1 ||
+            y2 > y1 + h1)
+        {
+            return false;
+        }
+        return true;
+    }
 
 function runSplash(deltaTime)
     {
@@ -145,8 +177,70 @@ function runGame(deltaTime)
     spawnTimer -= deltaTime;
     if(spawnTimer <= 0)
     {
-        spawnTimer = 1;
+        spawnTimer = 1.5;
         spawnAsteroid();
+    }
+
+    for(var i=0; i<asteroids.length; i++)
+    {
+        if(intersects(
+            asteroids[i].x, asteroids[i].y,
+            asteroids[i].width, asteroids[i].height,
+            player.x - player.width/2, player.y - player.height/2,
+            player.width, player.height) == true)
+        {
+            asteroids.splice(i,1);
+            player.health -= 1;
+            break;
+        }
+    }
+
+    for(var i=0; i<bullets.length; i++)
+    {
+        bullets[i].x += bullets[i].velocityX;
+        bullets[i].y += bullets[i].velocityY;
+    }
+    for(var i=0; i<bullets.length; i++)
+    {
+     
+        if(bullets[i].x < -bullets[i].width ||
+            bullets[i].x > SCREEN_WIDTH ||
+            bullets[i].y < -bullets[i].height ||
+            bullets[i].y > SCREEN_HEIGHT)
+        {
+     
+            bullets.splice(i, 1);
+            break;
+        }
+    }
+    for(var i=0; i<bullets.length; i++)
+    {
+        context.drawImage(bullets[i].image,
+            bullets[i].x - bullets[i].width/2,
+            bullets[i].y - bullets[i].height/2);
+    }
+
+    for(var i=0; i<asteroids.length; i++) // Here we see if a bullet has collided with an asteroid and deletes both accordingly
+    {
+    for(var j=0; j<bullets.length; j++)
+    {
+        if(intersects(
+            bullets[j].x, bullets[j].y,
+            bullets[j].width, bullets[j].height,
+            asteroids[i].x, asteroids[i].y,
+            asteroids[i].width, asteroids[i].height) == true)
+            {
+            asteroids.splice(i, 1);
+            bullets.splice(j, 1);
+            break;
+           
+            }
+        }
+    }
+
+    if(player.health == 0)
+    {
+        gameState = STATE_GAMEOVER;
     }
 }
 

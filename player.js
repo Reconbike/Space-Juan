@@ -13,7 +13,9 @@ var Player = function()
     this.directionY = 0;
 
     this.angularDirection = 0;
-    this.rotation= 0;
+    this.rotation = 0;
+
+    this.health = 2;
 
     this.shootTimer = 0;
 }
@@ -36,14 +38,14 @@ Player.prototype.update = function(deltaTime)
     	player.angularDirection = 0;
     }
 
-    if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && shootTimer <=0)
+    if(keyboard.isKeyDown(keyboard.KEY_Q) == true && this.shootTimer <= 0)
     {
-        shootTimer += 0.3;
-        playerShoot();
+        this.shootTimer += 0.3;
+        PrimaryFire();
     }
     if(this.shootTimer > 0)
     {
-      	this.shooTimer -= deltaTime;
+      	this.shootTimer -= deltaTime;
     }
 }
 
