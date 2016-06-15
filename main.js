@@ -20,7 +20,7 @@ var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
 var spawnTimer = 0;
 var speed = 0;
-
+var Score = 0;
 
 var asteroids = [];
 var bullets = [];
@@ -140,6 +140,9 @@ function runSplash(deltaTime)
 
 function runGame(deltaTime)
 {
+    context.fillStyle = "#000";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
 
