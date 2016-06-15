@@ -6,7 +6,7 @@ var context = canvas.getContext("2d");
 var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
  
-var ASTROID_SPEED = 2;//0.8;
+var ASTROID_SPEED = 1;//0.8;
 var PLAYER_SPEED = 1;
 var PLAYER_TURN_SPEED = 0.04
 var BULLET_SPEED = 10.5;
@@ -64,14 +64,14 @@ function rand(floor, ceil)
 
 function spawnAsteroid()
 {
-    var type = rand(0, 300);
+    var type = rand(0, 3);
     
     var asteroid = {};
     
     asteroid.image = document.createElement("img");
     asteroid.image.src = "asteroid.png";
-    asteroid.width = 6;
-    asteroid.hight = 7;
+    asteroid.width = 100;
+    asteroid.hight = 100;
     
     var x = SCREEN_WIDTH/2;
     var y = SCREEN_HEIGHT/2;
@@ -100,63 +100,24 @@ function spawnAsteroid()
     asteroids.push(asteroid);
 }
 
-function onKeyDown(event)
-{
-      if(event.keyCode == KEY_UP)
-      {
-           //player.directionY = 10;
-      }
- 
-      if(event.keyCode == KEY_DOWN)
-      {
-           //player.directionY = -1.5;
-      }      
-      if(event.keyCode == KEY_LEFT)
-      {
-            //player.angularDirection = -2;
-      }
-      if(event.keyCode == KEY_RIGHT)
-      {
-            //player.angularDirection = 2;
-      }
-      if(event.keyCode == KEY_SPACE && shootTimer <=0)
-      {
-          
-      }
-      
-      
-}
-function onKeyUp(event)
-{
-      if(event.keyCode == KEY_UP)
-      {
-           //player.directionY = 0;
-      }
- 
-      if(event.keyCode == KEY_DOWN)
-      {
-           //player.directionY = 0;
-      }      
-      if(event.keyCode == KEY_LEFT)
-      {
-            //player.angularDirection = 0;
-      }
-      if(event.keyCode == KEY_RIGHT)
-      {
-            //player.angularDirection = 0;
-      }/*
-      if(event.keyCode == KEY_SPACE)
-      {
-           // playerShoot();
-      }*/
+function runSplash(deltaTime)
+    {
+        splashTimer -= deltaTime;
+        if(splashTimer <= 0)
+        {
+            gameState = STATE_GAME;
+            return;
+        }
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#ffffff";
+        context.font="24px Arial";
+        context.fillText("Space-Juan", 450, 350);
+        context.fillText("By Jaymie Gobbet and Brendon Bano", 450, 400);
 }
 
-function run() {
-    //context.fillStyle = "#1dad78";
-    //context.fillRect(0, 0, canvas.width, canvas.height);
-
-    var deltaTime = getDeltaTime();
-
+function runGame(deltaTime)
+{
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
 
@@ -165,7 +126,7 @@ function run() {
     var XVel = XDir * PLAYER_SPEED;
     var YVel = YDir * PLAYER_SPEED;
 
-    player.draw();
+    //player.draw();
     player.update(deltaTime);
 
     player.x += XVel;
@@ -173,18 +134,6 @@ function run() {
 
     player.rotation += player.angularDirection * PLAYER_TURN_SPEED;
 
-    if (player.x < 0 || player.x > SCREEN_WIDTH ||
-        player.y < 0 || player.y > SCREEN_HEIGHT)//|| hit == true)
-    {
-        //console.log("hit")
-        gameover = true
-    }
-
-    if (gameover == true) {
-        context.fillStyle = "#000";
-        context.font = "240px Arial";
-        context.fillText("game over!", 400, 240);
-    }
     context.save();
     context.translate(player.x, player.y);
     context.rotate(player.rotation);
@@ -192,18 +141,45 @@ function run() {
         player.image, -player.width / 2, -player.height / 2);
     context.restore();
 
-    for (var i = 0; i < asteroids.length; i++) {
+    for(var i=0; i<asteroids.length; i++)
+    {
+        asteroids[i].x = asteroids[i].x + asteroids[i].velocityX;
+        asteroids[i].y = asteroids[i].y + asteroids[i].velocityY;
+    }
+     
+    for(var i=0; i<asteroids.length; i++)
+    {
         context.drawImage(asteroids[i].image, asteroids[i].x, asteroids[i].y);
     }
+}
 
-    spawnTimer -= deltaTime;
+function runGameOver(deltaTime) //here is where once switched the game over screen is shown, 
+    {
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#ffffff";
+        context.font="24px Arial";
+        context.fillText("YOU HAVE DIED!!!", 450, 450);
+}
 
-    if (spawnTimer <= 0) {
-        spawnTimer = 1;
-        spawnAsteroid();
-    }
+function run() {
+    context.fillStyle = "#1dad78";
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
+    var deltaTime = getDeltaTime();
 
+        switch(gameState)
+        {
+            case STATE_SPLASH:
+            runSplash(deltaTime);
+            break;
+            case STATE_GAME:
+            runGame(deltaTime);
+            break;
+            case STATE_GAMEOVER:
+            runGameOver(deltaTime);
+            break;
+        }
 }
 
 (function () {
