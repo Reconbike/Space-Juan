@@ -6,7 +6,7 @@ var context = canvas.getContext("2d");
 var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
  
-var ASTROID_SPEED = 1;//0.8;
+var ASTROID_SPEED = 1.25;//0.8;
 var ALIEN_SPEED = 4
 var PLAYER_SPEED = 2;
 var PLAYER_TURN_SPEED = 0.07
@@ -30,6 +30,7 @@ var sfxbullet;
 var sfxUFO;
 var sfxMENU;
 var sfxGG;
+var sfxExplosion;
 
 var asteroids = [];
 var aliens = [];
@@ -221,6 +222,18 @@ function initialize()
         }
     });
 
+    sfxExplosion = new Howl(
+    {
+        urls:["Explosion.ogg"],
+        buffer: true,
+        volume: 0.25,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+
+    });
+
+
     sfxUFO = new Howl(
     {
         urls:["UFO.ogg"],
@@ -402,6 +415,7 @@ function runGame(deltaTime)
             {
             asteroids.splice(i, 1);
             bullets.splice(j, 1);
+            sfxExplosion.play();
             Score += 10;
             break;
            
@@ -422,6 +436,7 @@ function runGame(deltaTime)
             aliens.splice(i, 1);
             bullets.splice(j, 1);
             sfxUFO.stop();
+            sfxExplosion.play();
             Score += 100;
             break;
            
@@ -465,6 +480,7 @@ function runGame(deltaTime)
             asteroids[i].width, asteroids[i].height) == true)
             {
             asteroids.splice(i, 1);
+            sfxExplosion.play();
             Score += 25;
             break;
            
