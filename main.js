@@ -15,17 +15,19 @@ var LAZER_SPEED = 2.5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
-var splashTimer = 3;
+var splashTimer = 10;
 var gameState = STATE_SPLASH;
 var shootTimer = 0;
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
 var spawnTimer = 0;
-var spawn2Timer= 0;
+var spawn2Timer= 10;
 var speed = 0;
 var Score = 0;
 var sfxlazer;
 var sfxbullet;
+var sfxUFO;
+var sfxMENU;
 
 var asteroids = [];
 var aliens = [];
@@ -216,7 +218,29 @@ function initialize()
             isSfxPlaying = false;
         }
     });
+
+    sfxUFO = new Howl(
+    {
+        urls:["UFO.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
+    sfxMENU = new Howl(
+    {
+        urls:["MENU.ogg"],
+        loop: true,
+        buffer: true,
+        volume: 1,
+
+    });
+
+    sfxMENU.play();
 }
+
 
 function runSplash(deltaTime)
     {
@@ -238,6 +262,8 @@ function runGame(deltaTime)
 {
     context.fillStyle = "#000";
     context.fillRect(0, 0, canvas.width, canvas.height);
+
+    sfxMENU.stop();
 
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
@@ -276,7 +302,7 @@ function runGame(deltaTime)
     spawnTimer -= deltaTime;
     if(spawnTimer <= 0)
     {
-        spawnTimer = 1;
+        spawnTimer = 0.5;
         spawnAsteroid();
     }
 
@@ -294,8 +320,9 @@ function runGame(deltaTime)
     spawn2Timer -= deltaTime;
     if(spawn2Timer <= 0)
     {
-        spawn2Timer = 10;
+        spawn2Timer = 25;
         spawnAlien();
+        sfxUFO.play();
     }
 
     for(var i=0; i<asteroids.length; i++)
@@ -321,6 +348,7 @@ function runGame(deltaTime)
         {
             aliens.splice(i,1);
             player.health -= 1;
+            sfxUFO.stop();
             break;
         }
     }
@@ -382,6 +410,7 @@ function runGame(deltaTime)
             {
             aliens.splice(i, 1);
             bullets.splice(j, 1);
+            sfxUFO.stop();
             Score += 100;
             break;
            
@@ -443,6 +472,7 @@ function runGame(deltaTime)
             aliens[i].width, aliens[i].height) == true)
             {
             aliens.splice(i, 1);
+            sfxUFO.stop();
             Score += 250;
             break;
            
