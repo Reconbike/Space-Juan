@@ -24,10 +24,12 @@ var spawnTimer = 0;
 var spawn2Timer= 10;
 var speed = 0;
 var Score = 0;
+
 var sfxlazer;
 var sfxbullet;
 var sfxUFO;
 var sfxMENU;
+var sfxGG;
 
 var asteroids = [];
 var aliens = [];
@@ -227,6 +229,15 @@ function initialize()
         onend: function(){
             isSfxPlaying = false;
         }
+    });
+
+    sfxGG = new Howl(
+    {
+        urls:["GG.ogg"],
+        loop: false,
+        buffer: true,
+        volume: 1,
+
     });
 
     sfxMENU = new Howl(
@@ -482,6 +493,8 @@ function runGame(deltaTime)
 
     if(player.health == 0)
     {
+        sfxGG.play();
+        sfxUFO.stop();
         gameState = STATE_GAMEOVER;
     }
 }
