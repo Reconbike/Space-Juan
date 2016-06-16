@@ -31,6 +31,7 @@ var sfxUFO;
 var sfxMENU;
 var sfxGG;
 var sfxExplosion;
+var sfxripUFO;
 
 var asteroids = [];
 var aliens = [];
@@ -233,6 +234,16 @@ function initialize()
 
     });
 
+    sfxripUFO = new Howl(
+    {
+        urls:["ripUFO.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+
+    });
 
     sfxUFO = new Howl(
     {
@@ -373,6 +384,7 @@ function runGame(deltaTime)
             aliens.splice(i,1);
             player.health -= 1;
             sfxUFO.stop();
+            sfxripUFO.play();
             break;
         }
     }
@@ -436,7 +448,7 @@ function runGame(deltaTime)
             aliens.splice(i, 1);
             bullets.splice(j, 1);
             sfxUFO.stop();
-            sfxExplosion.play();
+            sfxripUFO.play();
             Score += 100;
             break;
            
@@ -500,6 +512,7 @@ function runGame(deltaTime)
             {
             aliens.splice(i, 1);
             sfxUFO.stop();
+            sfxripUFO.play();
             Score += 250;
             break;
            
