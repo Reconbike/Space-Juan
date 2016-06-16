@@ -547,6 +547,11 @@ function runGameOver(deltaTime) //here is where once switched the game over scre
         context.font="24px Arial";
         context.fillText("YOU HAVE DIED!!!", 450, 400);
         context.fillText("Your score was " + Score, 450, 450);
+
+    if(keyboard.isKeyDown(keyboard.KEY_SHIFT) == true) 
+    {
+        window.location.reload(false);
+    }
 }
 
 function run() {
