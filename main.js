@@ -228,7 +228,7 @@ function runGame(deltaTime)
 
     sfxbullet = new Howl(
     {
-        urls:["bulletfire.ogg"],
+        urls:["Bulletfire.ogg"],
         buffer: true,
         volume: 1,
         onend: function(){

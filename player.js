@@ -43,11 +43,14 @@ Player.prototype.update = function(deltaTime)
     {
         this.shootTimer += 0.3;
         PrimaryFire();
+        sfxbullet.play();
     }
     if(keyboard.isKeyDown(keyboard.KEY_E) == true && this.shoot2Timer <= 0)
     {
         this.shoot2Timer += 1;
         SecondaryFire();
+        sfxlazer.play();
+
     }
     if(this.shootTimer > 0)
     {
