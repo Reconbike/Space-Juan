@@ -274,7 +274,7 @@ function runGame(deltaTime)
         lazers[i].x += lazers[i].velocityX;
         lazers[i].y += lazers[i].velocityY;
     }
-    for(var i=0; i<bullets.length; i++)
+    for(var i=0; i<lazers.length; i++)
     {
      
         if(lazers[i].x < -lazers[i].width ||
