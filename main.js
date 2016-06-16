@@ -24,6 +24,8 @@ var spawnTimer = 0;
 var spawn2Timer= 0;
 var speed = 0;
 var Score = 0;
+var sfxlazer;
+var sfxbullet;
 
 var asteroids = [];
 var aliens = [];
@@ -192,6 +194,7 @@ function spawnAlien()
         return true;
     }
 
+
 function runSplash(deltaTime)
     {
         splashTimer -= deltaTime;
@@ -213,6 +216,26 @@ function runGame(deltaTime)
     context.fillStyle = "#000";
     context.fillRect(0, 0, canvas.width, canvas.height);
     
+    sfxlazer = new Howl(
+    {
+        urls:["LazerFire.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
+    sfxbullet = new Howl(
+    {
+        urls:["bulletfire.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
 
