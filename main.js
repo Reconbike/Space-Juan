@@ -32,6 +32,7 @@ var sfxMENU;
 var sfxGG;
 var sfxExplosion;
 var sfxripUFO;
+var sfxMixtape;
 
 var asteroids = [];
 var aliens = [];
@@ -264,6 +265,15 @@ function initialize()
 
     });
 
+     sfxMixtape = new Howl(
+    {
+        urls:["Mixtape.ogg"],
+        loop: true,
+        buffer: true,
+        volume: 1,
+
+    });
+
     sfxMENU = new Howl(
     {
         urls:["MENU.ogg"],
@@ -274,6 +284,7 @@ function initialize()
     });
 
     sfxMENU.play();
+    sfxMixtape.play();
 }
 
 
@@ -297,7 +308,6 @@ function runGame(deltaTime)
 {
     context.fillStyle = "#000";
     context.fillRect(0, 0, canvas.width, canvas.height);
-
 
 
     var s = Math.sin(player.rotation);
@@ -522,6 +532,7 @@ function runGame(deltaTime)
 
     if(player.health == 0)
     {
+        sfxMixtape.stop();
         sfxGG.play();
         sfxUFO.stop();
         gameState = STATE_GAMEOVER;
