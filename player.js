@@ -18,6 +18,7 @@ var Player = function()
     this.health = 2;
 
     this.shootTimer = 0;
+    this.shoot2Timer = 0;
 }
 
 Player.prototype.update = function(deltaTime)
@@ -43,9 +44,18 @@ Player.prototype.update = function(deltaTime)
         this.shootTimer += 0.3;
         PrimaryFire();
     }
+    if(keyboard.isKeyDown(keyboard.KEY_E) == true && this.shoot2Timer <= 0)
+    {
+        this.shoot2Timer += 1;
+        SecondaryFire();
+    }
     if(this.shootTimer > 0)
     {
       	this.shootTimer -= deltaTime;
+    }
+    if(this.shoot2Timer > 0)
+    {
+        this.shoot2Timer -= deltaTime;
     }
 }
 

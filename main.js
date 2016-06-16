@@ -10,6 +10,7 @@ var ASTROID_SPEED = 1;//0.8;
 var PLAYER_SPEED = 2;
 var PLAYER_TURN_SPEED = 0.07
 var BULLET_SPEED = 10.5;
+var LAZER_SPEED = 5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
@@ -24,6 +25,7 @@ var Score = 0;
 
 var asteroids = [];
 var bullets = [];
+var lazers = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
@@ -64,6 +66,32 @@ function PrimaryFire()
     bullet.velocityY = yVel * BULLET_SPEED;
  
     bullets.push(bullet);
+}
+
+function SecondaryFire()
+{
+    var lazer = {
+        image: document.createElement("img"),
+        x: player.x,
+        y: player.y,
+        width: 30,
+        height: 30,
+        velocityX: 0,
+        velocityY: 0
+    };
+    lazer.image.src = "lazer.png";
+ 
+    var velX = 0;
+    var velY = -1;
+    var s = Math.sin(player.rotation);
+    var c = Math.cos(player.rotation);
+    var xVel = (velX * c) - (velY * s);
+    var yVel = (velX * s) + (velY * c);
+ 
+    lazer.velocityX = xVel * LAZER_SPEED;
+    lazer.velocityY = yVel * LAZER_SPEED;
+ 
+    lazers.push(lazer);
 }
 
 
@@ -235,6 +263,48 @@ function runGame(deltaTime)
             {
             asteroids.splice(i, 1);
             bullets.splice(j, 1);
+            break;
+           
+            }
+        }
+    }
+
+    for(var i=0; i<lazers.length; i++)
+    {
+        lazers[i].x += lazers[i].velocityX;
+        lazers[i].y += lazers[i].velocityY;
+    }
+    for(var i=0; i<bullets.length; i++)
+    {
+     
+        if(lazers[i].x < -lazers[i].width ||
+            lazers[i].x > SCREEN_WIDTH ||
+            lazers[i].y < -lazers[i].height ||
+            lazers[i].y > SCREEN_HEIGHT)
+        {
+     
+            lazers.splice(i, 1);
+            break;
+        }
+    }
+    for(var i=0; i<lazers.length; i++)
+    {
+        context.drawImage(lazers[i].image,
+            lazers[i].x - lazers[i].width/2,
+            lazers[i].y - lazers[i].height/2);
+    }
+
+    for(var i=0; i<asteroids.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    {
+    for(var j=0; j<lazers.length; j++)
+    {
+        if(intersects(
+            lazers[j].x, lazers[j].y,
+            lazers[j].width, lazers[j].height,
+            asteroids[i].x, asteroids[i].y,
+            asteroids[i].width, asteroids[i].height) == true)
+            {
+            asteroids.splice(i, 1);
             break;
            
             }
