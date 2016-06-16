@@ -195,6 +195,29 @@ function spawnAlien()
     }
 
 
+function initialize() 
+{
+    sfxlazer = new Howl(
+    {
+        urls:["LazerFire.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
+    sfxbullet = new Howl(
+    {
+        urls:["Bulletfire.ogg"],
+        buffer: true,
+        volume: 1,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+}
+
 function runSplash(deltaTime)
     {
         splashTimer -= deltaTime;
@@ -215,26 +238,6 @@ function runGame(deltaTime)
 {
     context.fillStyle = "#000";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    
-    sfxlazer = new Howl(
-    {
-        urls:["LazerFire.ogg"],
-        buffer: true,
-        volume: 1,
-        onend: function(){
-            isSfxPlaying = false;
-        }
-    });
-
-    sfxbullet = new Howl(
-    {
-        urls:["Bulletfire.ogg"],
-        buffer: true,
-        volume: 1,
-        onend: function(){
-            isSfxPlaying = false;
-        }
-    });
 
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
@@ -482,6 +485,8 @@ function run() {
             break;
         }
 }
+
+initialize();
 
 (function () {
     var onEachFrame;
