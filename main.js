@@ -232,7 +232,7 @@ function initialize()
     sfxMENU = new Howl(
     {
         urls:["MENU.ogg"],
-        loop: true,
+        loop: false,
         buffer: true,
         volume: 1,
 
@@ -263,7 +263,7 @@ function runGame(deltaTime)
     context.fillStyle = "#000";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    sfxMENU.stop();
+
 
     var s = Math.sin(player.rotation);
     var c = Math.cos(player.rotation);
