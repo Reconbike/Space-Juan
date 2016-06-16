@@ -7,10 +7,11 @@ var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
  
 var ASTROID_SPEED = 1;//0.8;
+var ALIEN_SPEED = 4
 var PLAYER_SPEED = 2;
 var PLAYER_TURN_SPEED = 0.07
 var BULLET_SPEED = 10.5;
-var LAZER_SPEED = 5;
+var LAZER_SPEED = 2.5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
@@ -20,10 +21,12 @@ var shootTimer = 0;
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
 var spawnTimer = 0;
+var spawn2Timer= 0;
 var speed = 0;
 var Score = 0;
 
 var asteroids = [];
+var aliens = [];
 var bullets = [];
 var lazers = [];
 var player = new Player();
@@ -138,6 +141,45 @@ function spawnAsteroid()
     asteroids.push(asteroid);
 }
 
+function spawnAlien()
+{
+    var type = rand(0, 3);
+    
+    var alien = {};
+    
+    alien.image = document.createElement("img");
+    alien.image.src = "Enemy.png";
+    alien.width = 62;
+    alien.height = 59;
+    
+    var x = SCREEN_WIDTH/2;
+    var y = SCREEN_HEIGHT/2;
+    
+    
+    var dirX = rand(-10,10);
+    var dirY = rand(-10,10);
+    
+    var magnitude = (dirX * dirX) + (dirY * dirY);
+    if(magnitude != 0)
+    {
+        var oneOverMag = 1 / Math.sqrt(magnitude);
+        dirX *= oneOverMag;
+        dirY *= oneOverMag;
+    }
+    
+    var movX = dirX * SCREEN_WIDTH;
+    var movY = dirY * SCREEN_HEIGHT;
+    
+    alien.x = x + movX;
+    alien.y = y + movY;
+    
+    alien.velocityX = -dirX * ALIEN_SPEED;
+    alien.velocityY = -dirY * ALIEN_SPEED;
+    
+    aliens.push(alien);
+}
+
+
  function intersects(x1, y1, w1, h1, x2, y2, w2, h2)
     {
         if(y2 + h2 < y1 ||
@@ -208,8 +250,26 @@ function runGame(deltaTime)
     spawnTimer -= deltaTime;
     if(spawnTimer <= 0)
     {
-        spawnTimer = 1.5;
+        spawnTimer = 1;
         spawnAsteroid();
+    }
+
+    for(var i=0; i<aliens.length; i++)
+    {
+        aliens[i].x = aliens[i].x + aliens[i].velocityX;
+        aliens[i].y = aliens[i].y + aliens[i].velocityY;
+    }
+     
+    for(var i=0; i<aliens.length; i++)
+    {
+        context.drawImage(aliens[i].image, aliens[i].x, aliens[i].y);
+    }
+
+    spawn2Timer -= deltaTime;
+    if(spawn2Timer <= 0)
+    {
+        spawn2Timer = 10;
+        spawnAlien();
     }
 
     for(var i=0; i<asteroids.length; i++)
@@ -225,6 +285,20 @@ function runGame(deltaTime)
             break;
         }
     }
+    for(var i=0; i<aliens.length; i++)
+    {
+        if(intersects(
+            aliens[i].x, aliens[i].y,
+            aliens[i].width, aliens[i].height,
+            player.x - player.width/2, player.y - player.height/2,
+            player.width, player.height) == true)
+        {
+            aliens.splice(i,1);
+            player.health -= 1;
+            break;
+        }
+    }
+
 
     for(var i=0; i<bullets.length; i++)
     {
@@ -263,6 +337,26 @@ function runGame(deltaTime)
             {
             asteroids.splice(i, 1);
             bullets.splice(j, 1);
+            Score += 10;
+            break;
+           
+            }
+        }
+    }
+
+    for(var i=0; i<aliens.length; i++) // Here we see if a bullet has collided with an asteroid and deletes both accordingly
+    {
+    for(var j=0; j<bullets.length; j++)
+    {
+        if(intersects(
+            bullets[j].x, bullets[j].y,
+            bullets[j].width, bullets[j].height,
+            aliens[i].x, aliens[i].y,
+            aliens[i].width, aliens[i].height) == true)
+            {
+            aliens.splice(i, 1);
+            bullets.splice(j, 1);
+            Score += 100;
             break;
            
             }
@@ -305,6 +399,25 @@ function runGame(deltaTime)
             asteroids[i].width, asteroids[i].height) == true)
             {
             asteroids.splice(i, 1);
+            Score += 25;
+            break;
+           
+            }
+        }
+    }
+
+    for(var i=0; i<aliens.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    {
+    for(var j=0; j<lazers.length; j++)
+    {
+        if(intersects(
+            lazers[j].x, lazers[j].y,
+            lazers[j].width, lazers[j].height,
+            aliens[i].x, aliens[i].y,
+            aliens[i].width, aliens[i].height) == true)
+            {
+            aliens.splice(i, 1);
+            Score += 250;
             break;
            
             }
@@ -323,7 +436,8 @@ function runGameOver(deltaTime) //here is where once switched the game over scre
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
         context.font="24px Arial";
-        context.fillText("YOU HAVE DIED!!!", 450, 450);
+        context.fillText("YOU HAVE DIED!!!", 450, 400);
+        context.fillText("Your score was " + Score, 450, 450);
 }
 
 function run() {
