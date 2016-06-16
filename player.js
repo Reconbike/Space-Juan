@@ -10,7 +10,7 @@ var Player = function()
     this.height= 57;
 
     this.directionX = 0;
-    this.directionY = 0;
+    this.directionY = -0.25;
 
     this.angularDirection = 0;
     this.rotation = 0;
@@ -28,7 +28,7 @@ Player.prototype.update = function(deltaTime)
     }else if (keyboard.isKeyDown(keyboard.KEY_S) == true) {
     	player.directionY = 1;
     }else{
-    	player.directionY = 0;
+    	player.directionY = -0.25;
     }
 
     if(keyboard.isKeyDown(keyboard.KEY_A) == true){
