@@ -208,7 +208,7 @@ function initialize()
     {
         urls:["LazerFire.ogg"],
         buffer: true,
-        volume: 1,
+        volume: 0.5,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -218,7 +218,7 @@ function initialize()
     {
         urls:["Bulletfire.ogg"],
         buffer: true,
-        volume: 1,
+        volume: 0.5,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -228,7 +228,7 @@ function initialize()
     {
         urls:["Explosion.ogg"],
         buffer: true,
-        volume: 0.25,
+        volume: 0.125,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -239,7 +239,7 @@ function initialize()
     {
         urls:["ripUFO.ogg"],
         buffer: true,
-        volume: 1,
+        volume: 0.5,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -250,7 +250,7 @@ function initialize()
     {
         urls:["UFO.ogg"],
         buffer: true,
-        volume: 1,
+        volume: 0.5,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -261,7 +261,7 @@ function initialize()
         urls:["GG.ogg"],
         loop: false,
         buffer: true,
-        volume: 1,
+        volume: 0.5,
 
     });
 
@@ -270,7 +270,7 @@ function initialize()
         urls:["Mixtape.ogg"],
         loop: true,
         buffer: true,
-        volume: 1,
+        volume: 0.5,
 
     });
 
@@ -279,7 +279,7 @@ function initialize()
         urls:["MENU.ogg"],
         loop: false,
         buffer: true,
-        volume: 1,
+        volume: 0.5,
 
     });
 
