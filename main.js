@@ -486,7 +486,7 @@ function runGame(deltaTime)
 
     if(Score >= 1200)
     {
-        xxx = 0.0725;
+        xxx = 0.15;
         yyy = 10;
     }
     spawn3Timer -= deltaTime;
