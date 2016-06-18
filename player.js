@@ -19,6 +19,7 @@ var Player = function()
 
     this.shootTimer = 0;
     this.shoot2Timer = 0;
+    this.shoot3Timer = 0;
 }
 
 Player.prototype.update = function(deltaTime)
@@ -52,6 +53,14 @@ Player.prototype.update = function(deltaTime)
         sfxlazer.play();
 
     }
+    if(keyboard.isKeyDown(keyboard.KEY_R) == true && this.shoot3Timer <= 0)
+    {
+        this.shoot3Timer += 17;
+        UltimateFire();
+        sfxUltimateShot.play();
+        sfxUltimateCharge.play();
+    }
+
     if(this.shootTimer > 0)
     {
       	this.shootTimer -= deltaTime;
@@ -59,6 +68,10 @@ Player.prototype.update = function(deltaTime)
     if(this.shoot2Timer > 0)
     {
         this.shoot2Timer -= deltaTime;
+    }
+    if(this.shoot3Timer > 0)
+    {
+        this.shoot3Timer -= deltaTime;
     }
 }
 

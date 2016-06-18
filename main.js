@@ -12,6 +12,7 @@ var PLAYER_SPEED = 2;
 var PLAYER_TURN_SPEED = 0.07
 var BULLET_SPEED = 10.5;
 var LAZER_SPEED = 2.5;
+var MATTER_SPEED = 1.5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
@@ -33,11 +34,14 @@ var sfxGG;
 var sfxExplosion;
 var sfxripUFO;
 var sfxMixtape;
+var sfxUltimateShot;
+var sfxUltimateCharge;
 
 var asteroids = [];
 var aliens = [];
 var bullets = [];
 var lazers = [];
+var matters = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
@@ -104,6 +108,32 @@ function SecondaryFire()
     lazer.velocityY = yVel * LAZER_SPEED;
  
     lazers.push(lazer);
+}
+
+function UltimateFire()
+{
+    var matter = {
+        image: document.createElement("img"),
+        x: player.x,
+        y: player.y,
+        width: 150,
+        height: 150,
+        velocityX: 0,
+        velocityY: 0
+    };
+    matter.image.src = "DarkMatter.png";
+ 
+    var velX = 0;
+    var velY = -1;
+    var s = Math.sin(player.rotation);
+    var c = Math.cos(player.rotation);
+    var xVel = (velX * c) - (velY * s);
+    var yVel = (velX * s) + (velY * c);
+ 
+    matter.velocityX = xVel * MATTER_SPEED;
+    matter.velocityY = yVel * MATTER_SPEED;
+ 
+    matters.push(matter);
 }
 
 
@@ -208,7 +238,7 @@ function initialize()
     {
         urls:["LazerFire.ogg"],
         buffer: true,
-        volume: 0.5,
+        volume: 0.25,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -218,7 +248,28 @@ function initialize()
     {
         urls:["Bulletfire.ogg"],
         buffer: true,
-        volume: 0.5,
+        volume: 0.25,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
+    sfxUltimateCharge = new Howl(
+    {
+        urls:["UltimateCharge.ogg"],
+        buffer: true,
+        volume: 0.15,
+        onend: function(){
+            isSfxPlaying = false;
+        }
+    });
+
+
+    sfxUltimateShot = new Howl(
+    {
+        urls:["UltimateShot.ogg"],
+        buffer: true,
+        volume: 0.25,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -228,7 +279,7 @@ function initialize()
     {
         urls:["Explosion.ogg"],
         buffer: true,
-        volume: 0.125,
+        volume: 0.10,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -239,7 +290,7 @@ function initialize()
     {
         urls:["ripUFO.ogg"],
         buffer: true,
-        volume: 0.5,
+        volume: 0.25,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -250,7 +301,7 @@ function initialize()
     {
         urls:["UFO.ogg"],
         buffer: true,
-        volume: 0.5,
+        volume: 0.25,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -530,11 +581,76 @@ function runGame(deltaTime)
         }
     }
 
+    for(var i=0; i<matters.length; i++)
+    {
+        matters[i].x += matters[i].velocityX;
+        matters[i].y += matters[i].velocityY;
+    }
+    for(var i=0; i<matters.length; i++)
+    {
+     
+        if(matters[i].x < -matters[i].width ||
+            matters[i].x > SCREEN_WIDTH ||
+            matters[i].y < -matters[i].height ||
+            matters[i].y > SCREEN_HEIGHT)
+        {
+     
+            matters.splice(i, 1);
+            break;
+        }
+    }
+    for(var i=0; i<matters.length; i++)
+    {
+        context.drawImage(matters[i].image,
+            matters[i].x - matters[i].width/2,
+            matters[i].y - matters[i].height/2);
+    }
+
+    for(var i=0; i<asteroids.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    {
+    for(var j=0; j<matters.length; j++)
+    {
+        if(intersects(
+            matters[j].x, matters[j].y,
+            matters[j].width, matters[j].height,
+            asteroids[i].x, asteroids[i].y,
+            asteroids[i].width, asteroids[i].height) == true)
+            {
+            asteroids.splice(i, 1);
+            sfxExplosion.play();
+            Score += 25;
+            break;
+           
+            }
+        }
+    }
+
+    for(var i=0; i<aliens.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    {
+    for(var j=0; j<matters.length; j++)
+    {
+        if(intersects(
+            matters[j].x, matters[j].y,
+            matters[j].width, matters[j].height,
+            aliens[i].x, aliens[i].y,
+            aliens[i].width, aliens[i].height) == true)
+            {
+            aliens.splice(i, 1);
+            sfxUFO.stop();
+            sfxripUFO.play();
+            Score += 1000;
+            break;
+           
+            }
+        }
+    }
+
     if(player.health == 0)
     {
         sfxMixtape.stop();
         sfxGG.play();
         sfxUFO.stop();
+        sfxUltimateCharge.stop();
         gameState = STATE_GAMEOVER;
     }
 }
