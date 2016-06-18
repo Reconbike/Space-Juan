@@ -22,6 +22,7 @@ var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
 var spawnTimer = 0;
 var spawn2Timer= 10;
+var spawn3Timer= 30;
 var speed = 0;
 var Score = 0;
 var TimerCoolDown = 0;
@@ -42,6 +43,7 @@ var sfxAlarm;
 
 //All arrays used in the game
 var asteroids = [];
+var asteroid2s = [];
 var aliens = [];
 var bullets = [];
 var lazers = [];
@@ -195,6 +197,44 @@ function spawnAsteroid()
     asteroid.velocityY = -dirY * ASTROID_SPEED;
     
     asteroids.push(asteroid);
+}
+
+function spawnAsteroid2()
+{
+    var type = rand(0, 3);
+    
+    var asteroid2 = {};
+    
+    asteroid2.image = document.createElement("img");
+    asteroid2.image.src = "asteroid_l_01_by_skazdal-d8v7rzq.png";
+    asteroid2.width = 100;
+    asteroid2.height = 100;
+    
+    var x = SCREEN_WIDTH/2;
+    var y = SCREEN_HEIGHT/2;
+    
+    
+    var dirX = rand(-10,10);
+    var dirY = rand(-10,10);
+    
+    var magnitude = (dirX * dirX) + (dirY * dirY);
+    if(magnitude != 0)
+    {
+        var oneOverMag = 1 / Math.sqrt(magnitude);
+        dirX *= oneOverMag;
+        dirY *= oneOverMag;
+    }
+    
+    var movX = dirX * SCREEN_WIDTH;
+    var movY = dirY * SCREEN_HEIGHT;
+    
+    asteroid2.x = x + movX;
+    asteroid2.y = y + movY;
+    
+    asteroid2.velocityX = -dirX * (ASTROID_SPEED - (ASTROID_SPEED / 2));
+    asteroid2.velocityY = -dirY * (ASTROID_SPEED - (ASTROID_SPEED / 2));
+    
+    asteroid2s.push(asteroid2);
 }
 
 function spawnAlien()
@@ -418,17 +458,35 @@ function runGame(deltaTime)
         asteroids[i].x = asteroids[i].x + asteroids[i].velocityX;
         asteroids[i].y = asteroids[i].y + asteroids[i].velocityY;
     }
+
+    for(var i=0; i<asteroid2s.length; i++)
+    {
+        asteroid2s[i].x = asteroid2s[i].x + asteroid2s[i].velocityX;
+        asteroid2s[i].y = asteroid2s[i].y + asteroid2s[i].velocityY;
+    }
      
     for(var i=0; i<asteroids.length; i++)
     {
         context.drawImage(asteroids[i].image, asteroids[i].x, asteroids[i].y);
     }
 
+    for(var i=0; i<asteroid2s.length; i++)
+    {
+        context.drawImage(asteroid2s[i].image, asteroid2s[i].x, asteroid2s[i].y);
+    }
+
     spawnTimer -= deltaTime;
     if(spawnTimer <= 0)
     {
-        spawnTimer = 0.5;
+        spawnTimer = 10.5;
         spawnAsteroid();
+    }
+
+    spawn3Timer -= deltaTime;
+    if(spawn3Timer <= 0)
+    {
+        spawn3Timer = 30;
+        spawnAsteroid2();
     }
 
     for(var i=0; i<aliens.length; i++)
@@ -461,6 +519,18 @@ function runGame(deltaTime)
             asteroids.splice(i,1);
             player.health -= 1;
             sfxAlarm.play();
+            break;
+        }
+    }
+    for(var i=0; i<asteroid2s.length; i++)
+    {
+        if(intersects(
+            asteroid2s[i].x, asteroid2s[i].y,
+            asteroid2s[i].width, asteroid2s[i].height,
+            player.x - player.width/2, player.y - player.height/2,
+            player.width, player.height) == true)
+        {
+            player.health -= 1;
             break;
         }
     }
@@ -521,6 +591,25 @@ function runGame(deltaTime)
             bullets.splice(j, 1);
             sfxExplosion.play();
             Score += 10;
+            break;
+           
+            }
+        }
+    }
+
+    for(var i=0; i<asteroid2s.length; i++) // Here we see if a bullet has collided with an asteroid and deletes both accordingly
+    {
+    for(var j=0; j<matters.length; j++)
+    {
+        if(intersects(
+            matters[j].x, matters[j].y,
+            matters[j].width, matters[j].height,
+            asteroid2s[i].x, asteroid2s[i].y,
+            asteroid2s[i].width, asteroid2s[i].height) == true)
+            {
+            asteroid2s.splice(i, 1);
+            sfxExplosion.play();
+            Score += 500;
             break;
            
             }
