@@ -38,6 +38,7 @@ var sfxripUFO;
 var sfxMixtape;
 var sfxUltimateShot;
 var sfxUltimateCharge;
+var sfxAlarm;
 
 //All arrays used in the game
 var asteroids = [];
@@ -333,13 +334,23 @@ function initialize()
 
     });
 
-     sfxMixtape = new Howl(
+    sfxMixtape = new Howl(
     {
         urls:["Mixtape.ogg"],
         loop: true,
         buffer: true,
         volume: 0.5,
 
+    });
+    
+    sfxAlarm = new Howl(
+    {
+        urls:["Alarm.ogg"],
+        buffer: true,
+        volume: 0.5,
+        onend: function(){
+            isSfxPlaying = false;
+        }
     });
 
     sfxMENU = new Howl(
@@ -449,6 +460,7 @@ function runGame(deltaTime)
         {
             asteroids.splice(i,1);
             player.health -= 1;
+            sfxAlarm.play();
             break;
         }
     }
@@ -462,6 +474,7 @@ function runGame(deltaTime)
         {
             aliens.splice(i,1);
             player.health -= 1;
+            sfxAlarm.play();
             sfxUFO.stop();
             sfxripUFO.play();
             break;
@@ -712,6 +725,7 @@ function runGame(deltaTime)
 
 function runGameOver(deltaTime) //here is where once switched the game over screen is shown, 
     {
+        sfxAlarm.stop();
         context.fillStyle = "#000";
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
