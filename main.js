@@ -24,6 +24,8 @@ var spawnTimer = 0;
 var spawn2Timer= 10;
 var speed = 0;
 var Score = 0;
+var TimerCoolDown = 0;
+var Timer = 0;
 
 //Variables to control all sounds in the game
 var sfxlazer;
@@ -685,12 +687,27 @@ function runGame(deltaTime)
         context.drawImage(Charging,940,630)
     }
 
+    // Our version of creating a timer
+    if(TimerCoolDown > 0)
+    {
+        TimerCoolDown -= deltaTime;
+    }
+
+    if(Timer >=0 && TimerCoolDown <=0)
+    {
+        Timer +=1;
+        TimerCoolDown +=1;
+    }
+
     context.font="24px Arial";
     context.fillStyle = "#FFFFFF";
     context.drawImage(Bar,460,0)
-    context.fillText("SCORE: " + Score, 500,30)
+    context.fillText("SCORE: " + Score,500,30)
     context.fillText("Ship's Condition:",0,620)
     context.fillText("Dark Matter Cannon",925,620)
+    context.fillText(Timer,550,75)
+
+
 }
 
 function runGameOver(deltaTime) //here is where once switched the game over screen is shown, 
