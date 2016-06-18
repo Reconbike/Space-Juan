@@ -1,18 +1,17 @@
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
 
-
-
 var SCREEN_WIDTH = canvas.width;
 var SCREEN_HEIGHT = canvas.height;
- 
+
+//Variables open to change to control the game
 var ASTROID_SPEED = 1.25;//0.8;
 var ALIEN_SPEED = 4
 var PLAYER_SPEED = 2;
 var PLAYER_TURN_SPEED = 0.07
 var BULLET_SPEED = 10.5;
 var LAZER_SPEED = 2.5;
-var MATTER_SPEED = 1.5;
+var MATTER_SPEED = 5;
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
@@ -26,6 +25,7 @@ var spawn2Timer= 10;
 var speed = 0;
 var Score = 0;
 
+//Variables to control all sounds in the game
 var sfxlazer;
 var sfxbullet;
 var sfxUFO;
@@ -37,6 +37,7 @@ var sfxMixtape;
 var sfxUltimateShot;
 var sfxUltimateCharge;
 
+//All arrays used in the game
 var asteroids = [];
 var aliens = [];
 var bullets = [];
@@ -56,7 +57,6 @@ var keyboard = new Keyboard();
     }
     return deltaTime;
 }  
-
 
 function PrimaryFire()
 {
@@ -231,6 +231,7 @@ function spawnAlien()
         return true;
     }
 
+//initialize holds all sound files that are going to be used in the game
 
 function initialize() 
 {
@@ -351,8 +352,9 @@ function runSplash(deltaTime)
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
         context.font="24px Arial";
-        context.fillText("Space-Juan", 450, 350);
-        context.fillText("By Jaymie Gobbett and Brendon Bano", 450, 400);
+        context.fillText("Space-Juan", 500, 300);
+        context.fillText("An Asteroid Space Shooter", 430, 350);
+        context.fillText("By Jaymie Gobbett and Brendon Bano", 380, 400);
 }
 
 function runGame(deltaTime)
@@ -606,7 +608,7 @@ function runGame(deltaTime)
             matters[i].y - matters[i].height/2);
     }
 
-    for(var i=0; i<asteroids.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    for(var i=0; i<asteroids.length; i++) // Here we see if a Matter Cannon has collided with an asteroid and deletes ONLY the asteroid
     {
     for(var j=0; j<matters.length; j++)
     {
@@ -625,7 +627,7 @@ function runGame(deltaTime)
         }
     }
 
-    for(var i=0; i<aliens.length; i++) // Here we see if a lazer has collided with an asteroid and deletes ONLY the asteroid
+    for(var i=0; i<aliens.length; i++) // Here we see if a Matter Cannon has collided with an asteroid and deletes ONLY the asteroid
     {
     for(var j=0; j<matters.length; j++)
     {
@@ -661,8 +663,9 @@ function runGameOver(deltaTime) //here is where once switched the game over scre
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
         context.font="24px Arial";
-        context.fillText("YOU HAVE DIED!!!", 450, 400);
-        context.fillText("Your score was " + Score, 450, 450);
+        context.fillText("YOU HAVE DIED!!!", 450, 350);
+        context.fillText("Your score was " + Score +" :D", 450, 400);
+        context.fillText("Press Shift to restart", 450, 450);
 
     if(keyboard.isKeyDown(keyboard.KEY_SHIFT) == true) 
     {
@@ -691,6 +694,8 @@ function run() {
 }
 
 initialize();
+
+//===========================================DO NOT EDIT BELOW THIS LINE =================================================
 
 (function () {
     var onEachFrame;
