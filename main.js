@@ -46,6 +46,20 @@ var matters = [];
 var player = new Player();
 var keyboard = new Keyboard();
 
+//images used in the HUD
+
+var Bar = document.createElement("img");
+Bar.src = "Bar.png"
+var Functional = document.createElement("img");
+Functional.src = "Functional.png";
+var Critical = document.createElement("img");
+Critical.src = "Critical.png";
+var Charged = document.createElement("img");
+Charged.src = "Charged.png";
+var Charging = document.createElement("img");
+Charging.src = "Charging.png";
+
+
  function getDeltaTime()
 {
     endFrameMillis = startFrameMillis;
@@ -351,10 +365,10 @@ function runSplash(deltaTime)
         context.fillStyle = "#000";
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
-        context.font="24px Arial";
-        context.fillText("Space-Juan", 500, 300);
-        context.fillText("An Asteroid Space Shooter", 430, 350);
-        context.fillText("By Jaymie Gobbett and Brendon Bano", 380, 400);
+        context.font="32px Arial";
+        context.fillText("Space-Juan", 470, 300);
+        context.fillText("An Asteroid Space Shooter", 390, 350);
+        context.fillText("By Jaymie Gobbett and Brendon Bano", 300, 400);
 }
 
 function runGame(deltaTime)
@@ -655,6 +669,28 @@ function runGame(deltaTime)
         sfxUltimateCharge.stop();
         gameState = STATE_GAMEOVER;
     }
+    if(player.health == 2){
+        context.drawImage(Functional,0,630)
+    }
+    if(player.health == 1){
+        context.drawImage(Critical,0,630)
+    }
+
+    if(player.shoot3Timer <= 0)
+    {
+        context.drawImage(Charged,940,630)
+    }
+    if(player.shoot3Timer > 0)
+    {
+        context.drawImage(Charging,940,630)
+    }
+
+    context.font="24px Arial";
+    context.fillStyle = "#FFFFFF";
+    context.drawImage(Bar,460,0)
+    context.fillText("SCORE: " + Score, 500,30)
+    context.fillText("Ship's Condition:",0,620)
+    context.fillText("Dark Matter Cannon",925,620)
 }
 
 function runGameOver(deltaTime) //here is where once switched the game over screen is shown, 
@@ -662,7 +698,7 @@ function runGameOver(deltaTime) //here is where once switched the game over scre
         context.fillStyle = "#000";
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
-        context.font="24px Arial";
+        context.font="32px Arial";
         context.fillText("YOU HAVE DIED!!!", 450, 350);
         context.fillText("Your score was " + Score +" :D", 450, 400);
         context.fillText("Press Shift to restart", 450, 450);

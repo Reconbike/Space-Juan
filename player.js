@@ -24,6 +24,8 @@ var Player = function()
 
 Player.prototype.update = function(deltaTime)
 {
+    // List of all controls and movements
+    
     if(keyboard.isKeyDown(keyboard.KEY_W) == true){
     	player.directionY = -1;
     }else if (keyboard.isKeyDown(keyboard.KEY_S) == true) {
@@ -39,6 +41,8 @@ Player.prototype.update = function(deltaTime)
     }else{
     	player.angularDirection = 0;
     }
+    
+    //Weapon controls 
 
     if(keyboard.isKeyDown(keyboard.KEY_Q) == true && this.shootTimer <= 0)
     {
@@ -60,6 +64,8 @@ Player.prototype.update = function(deltaTime)
         sfxUltimateShot.play();
         sfxUltimateCharge.play();
     }
+
+    //Cooldowns on the weapons being used
 
     if(this.shootTimer > 0)
     {
