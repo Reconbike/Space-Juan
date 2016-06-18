@@ -318,7 +318,7 @@ function initialize()
     {
         urls:["UltimateCharge.ogg"],
         buffer: true,
-        volume: 0.15,
+        volume: 0.05,
         onend: function(){
             isSfxPlaying = false;
         }
@@ -820,8 +820,6 @@ function runGameOver(deltaTime) //here is where once switched the game over scre
 }
 
 function run() {
-    context.fillStyle = "#1dad78";
-    context.fillRect(0, 0, canvas.width, canvas.height);
 
     var deltaTime = getDeltaTime();
 

@@ -10,7 +10,7 @@ var Player = function()
     this.height= 57;
 
     this.directionX = 0;
-    this.directionY = 0;
+    this.directionY = -0.25;
 
     this.angularDirection = 0;
     this.rotation = 0;
@@ -18,34 +18,66 @@ var Player = function()
     this.health = 2;
 
     this.shootTimer = 0;
+    this.shoot2Timer = 0;
+    this.shoot3Timer = 0;
 }
 
 Player.prototype.update = function(deltaTime)
 {
+    // List of all controls and movements
+    
     if(keyboard.isKeyDown(keyboard.KEY_W) == true){
-    	player.directionY = -2;
+    	player.directionY = -1;
     }else if (keyboard.isKeyDown(keyboard.KEY_S) == true) {
     	player.directionY = 1;
     }else{
-    	player.directionY = 0;
+    	player.directionY = -0.25;
     }
 
     if(keyboard.isKeyDown(keyboard.KEY_A) == true){
-    	player.angularDirection = -2;
+    	player.angularDirection = -1;
     }else if (keyboard.isKeyDown(keyboard.KEY_D) == true) {
-    	player.angularDirection = 2;
+    	player.angularDirection = 1;
     }else{
     	player.angularDirection = 0;
     }
+    
+    //Weapon controls 
 
     if(keyboard.isKeyDown(keyboard.KEY_Q) == true && this.shootTimer <= 0)
     {
-        this.shootTimer += 0.000000000000001;
+        this.shootTimer += 0.003;
         PrimaryFire();
+        sfxbullet.play();
     }
+    if(keyboard.isKeyDown(keyboard.KEY_E) == true && this.shoot2Timer <= 0)
+    {
+        this.shoot2Timer += 0.5;
+        SecondaryFire();
+        sfxlazer.play();
+
+    }
+    if(keyboard.isKeyDown(keyboard.KEY_R) == true && this.shoot3Timer <= 0)
+    {
+        this.shoot3Timer += 11;
+        UltimateFire();
+        sfxUltimateShot.play();
+        sfxUltimateCharge.play();
+    }
+
+    //Cooldowns on the weapons being used
+
     if(this.shootTimer > 0)
     {
       	this.shootTimer -= deltaTime;
+    }
+    if(this.shoot2Timer > 0)
+    {
+        this.shoot2Timer -= deltaTime;
+    }
+    if(this.shoot3Timer > 0)
+    {
+        this.shoot3Timer -= deltaTime;
     }
 }
 
