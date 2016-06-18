@@ -27,6 +27,8 @@ var speed = 0;
 var Score = 0;
 var TimerCoolDown = 0;
 var Timer = 0;
+var xxx = 0.4;
+var yyy = 30;
 
 //Variables to control all sounds in the game
 var sfxlazer;
@@ -478,14 +480,19 @@ function runGame(deltaTime)
     spawnTimer -= deltaTime;
     if(spawnTimer <= 0)
     {
-        spawnTimer = 10.5;
+        spawnTimer = xxx;
         spawnAsteroid();
     }
 
+    if(Score >= 1200)
+    {
+        xxx = 0.0725;
+        yyy = 10;
+    }
     spawn3Timer -= deltaTime;
     if(spawn3Timer <= 0)
     {
-        spawn3Timer = 30;
+        spawn3Timer = yyy;
         spawnAsteroid2();
     }
 
