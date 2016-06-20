@@ -59,7 +59,7 @@ Player.prototype.update = function(deltaTime)
     }
     if(keyboard.isKeyDown(keyboard.KEY_R) == true && this.shoot3Timer <= 0)
     {
-        this.shoot3Timer += 11;
+        this.shoot3Timer += 0.01;
         UltimateFire();
         sfxUltimateShot.play();
         sfxUltimateCharge.play();
