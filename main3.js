@@ -420,6 +420,13 @@ function runSplash(deltaTime)
         context.fillStyle = "#000";
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#ffffff";
+        context.font="14px Arial";
+
+        context.fillText("Controls:", 0, 50);
+        context.fillText("W A S D - To move Forward, Backward, Turn Left and to Turn Right", 0, 75);
+        context.fillText("Q to Fire the Machine Gun (1 hit 1 kill) ", 0, 100);
+        context.fillText("E To Fire Lazers Balls (can penetrate asteroids) ", 0, 125);
+        context.fillText("R To Fire Dark Matter Cannon (Can penetrate asteroids and destroy the super asteroid, requires charging before firing again)", 0, 150);
         context.font="32px Arial";
         context.fillText("Space-Juan", 470, 300);
         context.fillText("An Asteroid Space Shooter", 390, 350);
