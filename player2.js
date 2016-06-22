@@ -61,8 +61,6 @@ Player.prototype.update = function(deltaTime)
     {
         this.shoot3Timer += 0.01;
         UltimateFire();
-        sfxUltimateShot.play();
-        sfxUltimateCharge.play();
     }
 
     //Cooldowns on the weapons being used
